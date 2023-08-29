@@ -3,142 +3,155 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Heap{
+class Heap {
 private:
     int a[101], size;
 
 public:
-    Heap(){
+    Heap() {
         size = 0;
     }
 
 private:
-    void bottomTopAdjust(int i){
-        while(i!=1)
-        {
-            if(a[i]>a[i/2])
-                swap(a[i],a[i/2]);
+    void bottomTopAdjust(int i) {
+        while (i != 1) {
+            if (a[i] > a[i / 2])
+                swap(a[i], a[i / 2]);
             else
                 break;
-            i=i/2;
+            i = i / 2;
         }
-
     }
 
-    void topBottomAdjust(int i){    /// HEAPIFY!
-        int pseudoRoot=a[i];
-        int pseudoIdx=i;
-        while(i<=size/2)
-        {
-            int leftVal=a[2*i];
-            int maxIdx=2*i;
-            if((2*i+1)<=size && a[2*i+1]>leftVal)
-                maxIdx=2*i+1;
-            if(a[i]<a[maxIdx])
-            {
-                swap(a[i],a[maxIdx]);
+    void topBottomAdjust(int i) {    /// HEAPIFY!
+        int pseudoRoot = a[i];
+        int pseudoIdx = i;
+        while (i <= size / 2) {
+            int leftVal = a[2 * i];
+            int maxIdx = 2 * i;
+            if ((2 * i + 1) <= size && a[2 * i + 1] > leftVal)
+                maxIdx = 2 * i + 1;
+            if (a[i] < a[maxIdx]) {
+                swap(a[i], a[maxIdx]);
             }
-            else
-            {
+            else {
                 break;
             }
-            i=maxIdx;
+            i = maxIdx;
         }
-
     }
 
 public:
-    bool insert(int val){
-    }
-    bool increaseKey(int x, int k)
-    {
-    }
-    int showMax(){
-    }
-
-    int showSize(){
+    bool insert(int val) {
+        if (size >= 100)
+            return false;
+        size++;
+        a[size] = val;
+        bottomTopAdjust(size);
+        return true;
     }
 
-    int extractMax(){
-
+    bool increaseKey(int x, int k) {
+        if (x < 1 || x > size || k <= a[x])
+            return false;
+        a[x] = k;
+        bottomTopAdjust(x);
+        return true;
     }
 
-    void bfs(){
-        if(size==0) return;
-        int level = 2;
-        queue<int>q;
+    int showMax() {
+        if (size == 0)
+            return -1; // Assuming -1 is an invalid value
+        return a[1];
+    }
+
+    int showSize() {
+        return size;
+    }
+
+    int extractMax() {
+        if (size == 0)
+            return -1; // Assuming -1 is an invalid value
+        int maxVal = a[1];
+        swap(a[1], a[size]);
+        size--;
+        topBottomAdjust(1);
+        return maxVal;
+    }
+
+    void bfs() {
+        if (size == 0)
+            return;
+        int level = 1;
+        queue<int> q;
         q.push(1);
 
-        while(!q.empty()){
+        while (!q.empty()) {
             int parent = q.front();
             q.pop();
-            if(parent==level){
-                cout<<endl;
+            if (parent == level) {
+                cout << endl;
                 level = level * 2;
             }
-            cout<<a[parent]<<" ";
-            if(2*parent <= size) q.push(2*parent);
-            if(2*parent + 1 <= size) q.push(2*parent + 1);
+            cout << a[parent] << " ";
+            if (2 * parent <= size) q.push(2 * parent);
+            if (2 * parent + 1 <= size) q.push(2 * parent + 1);
         }
     }
 };
 
-int main(){
+int main() {
 
     Heap heap;
 
-    while(1){
-        cout<<"1. Insert    2. Increase Key    3. Show Max    4. Extract Max  5. Level Order Traversal 6. End"<<endl<<endl;
+    while (true) {
+        cout << "1. Insert    2. Increase Key    3. Show Max    4. Extract Max  5. Level Order Traversal 6. End" << endl << endl;
         int choice;
-        cin>>choice;
+        cin >> choice;
 
-        if(choice==1){
-            cout<<"Insert Value: ";
+        if (choice == 1) {
+            cout << "Insert Value: ";
             int y;
-            cin>>y;
+            cin >> y;
             bool b = heap.insert(y);
 
-            if(b)   cout<<y<<" is inserted in the heap"<<endl;
+            if (b)   cout << y << " is inserted in the heap" << endl;
         }
-        else if(choice==2){
-            cout<<"Which node you want to increase?"<<endl;
+        else if (choice == 2) {
+            cout << "Which node you want to increase?" << endl;
             int nodeNo;
-            cin>>nodeNo;
-            cout<<"What will be the new value?"<<endl;
+            cin >> nodeNo;
+            cout << "What will be the new value?" << endl;
             int value;
-            cin>>value;
-            bool b=heap.increaseKey(nodeNo,value);
-            if(b) cout<<"Node value increased successfully!"<<endl;
-            else cout<<"Unsuccessful Operation :("<<endl;
+            cin >> value;
+            bool b = heap.increaseKey(nodeNo, value);
+            if (b) cout << "Node value increased successfully!" << endl;
+            else cout << "Unsuccessful Operation :(" << endl;
         }
-        else if(choice==3){
-            if(heap.showSize()!=0)  cout<<"Max Element: "<<heap.showMax();
-            else    cout<<"No element in the heap"<<endl;
+        else if (choice == 3) {
+            if (heap.showSize() != 0)  cout << "Max Element: " << heap.showMax();
+            else    cout << "No element in the heap" << endl;
         }
-
-        else if(choice==3){
-            if(heap.showSize()!=0)  cout<<"Max Element: "<<heap.showMax();
-            else    cout<<"No element in the queue"<<endl;
+        else if (choice == 4) {
+            if (heap.showSize() != 0)  cout << "Max element extracted: " << heap.extractMax();
+            else    cout << "No element in the heap" << endl;
         }
-
-        else if(choice==4){
-            if(heap.showSize()!=0)  cout<<"Max element extracted: "<<heap.extractMax();
-            else    cout<<"No element in the queue"<<endl;
+        else if (choice == 5) {
+            cout << "Level Wise Traversal of the heap:" << endl;
+            heap.bfs();
+            cout << endl;
         }
-
-        else if(choice==5){
-           cout<<"Level Wise Traversal of the Queue:"<<endl;
-           heap.bfs();
-           cout<<endl;
-        }
-        else if(choice==6)
+        else if (choice == 6)
             break;
-        else{
-            cout<<"Invalid Choice"<<endl;
+        else {
+            cout << "Invalid Choice" << endl;
         }
-        cout<<endl;
+        cout << endl;
     }
+
+    return 0;
 }
+
 
 /*
 1 2
