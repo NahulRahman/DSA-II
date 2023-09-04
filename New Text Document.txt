@@ -1,0 +1,1168 @@
+//mergesort
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int b[100];
+
+void merge(int a[], int low, int middle, int high) {
+    int i = low;
+    int j = middle + 1;
+    int k = low;
+
+    while (i <= middle && j <= high) {
+        if (a[i] <= a[j]) {
+            b[k] = a[i];
+            k++;
+            i++;
+        } else {
+            b[k] = a[j];
+            k++;
+            j++;
+        }
+    }
+
+    while (i <= middle) {
+        b[k] = a[i];
+        k++;
+        i++;
+    }
+
+    while (j <= high) {
+        b[k] = a[j];
+        k++;
+        j++;
+    }
+
+    for (int p = low; p <= high; p++) {
+        a[p] = b[p];
+    }
+}
+
+void mergeSort(int a[], int low, int high) {
+    if (low < high) {
+        int middle = (low + high) / 2;
+        mergeSort(a, low, middle);
+        mergeSort(a, middle + 1, high);
+        merge(a, low, middle, high);
+    }
+}
+
+int main() {
+    int n = 6; // Number of elements in the array
+    int a[] = { 12, 11, 13, 5, 6, 7 }; // Initialize the array
+
+    mergeSort(a, 0, n - 1);
+
+    cout << "Sorted array using Merge Sort:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << " ";
+    }
+
+    return 0;
+}
+
+/*
+#include <iostream>
+#include<algorithm>
+using namespace std;
+int b[100];
+void merge(int a[], int low, int middle, int high) {
+    int i = low;
+    int j = middle+1;
+    int k = low;
+
+    while(i<=middle&&j<=high){
+        if(a[i]<=a[j]){
+            b[k]=a[i];
+            k++;
+            i++;
+        }
+        else{
+            b[k]=a[j];
+            k++;
+            j++;
+        }
+    }
+    if(i>middle){
+        while(j<high){
+            b[k]=a[j];
+            k++;
+            j++;
+        }
+    }else{
+            b[k]=a[i];
+            k++;
+            i++;
+        }
+
+    for (int p = 0; p < 6; p++) {
+        a[p] = b[p];
+    }
+
+
+}
+
+void mergeSort(int a[], int low, int high) {
+    if (low < high) {
+        int middle = (low+high) / 2;
+        mergeSort(a, low, middle);
+        mergeSort(a, middle + 1, high);
+        merge(a, low, middle, high);
+
+    }
+}
+
+int main() {
+    int n = 6; // Number of elements in the array
+    int a[] = { 12, 11, 13, 5, 6, 7 }; // Initialize the array
+
+    mergeSort(a, 0, n - 1);
+
+    cout << "Sorted array using Merge Sort:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << b[i] << " ";
+    }
+
+    return 0;
+}
+*/
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//quicksort
+
+#include <iostream>
+using namespace std;
+
+/*Algorithm:
+
+Choose a pivot element.
+Partition the array into two sub-arrays: elements less than the pivot and elements greater than the pivot.
+Recursively apply Quick Sort to the sub-arrays.
+Combine the sorted sub-arrays.*/
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low-1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+}
+
+int main() {
+    int n = 9;
+    int arr[] = { 10, 7, 8, 9, 1, 5, 4, 6, 6};
+    quickSort(arr, 0, n - 1);
+
+    cout << "Sorted array using Quick Sort:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    return 0;
+}
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//quicksort as low pivot
+
+#include <iostream>
+using namespace std;
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[low]; // Use the low element as the pivot
+    int i = low + 1;
+    int j = high;
+
+    while (true) {
+        while (i <= j && arr[i] <= pivot) {
+            i++;
+        }
+        while (i <= j && arr[j] >= pivot) {
+            j--;
+        }
+        if (i <= j) {
+            swap(arr[i], arr[j]);
+        } else {
+            break;
+        }
+    }
+
+    swap(arr[low], arr[j]);
+    return j;
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of elements: ";
+    cin >> n;
+    
+    int arr[n];
+    cout << "Enter " << n << " elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    quickSort(arr, 0, n - 1);
+
+    cout << "Sorted array using Quick Sort:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+
+    return 0;
+}
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//quicksort middle as pivot
+
+#include <iostream>
+using namespace std;
+
+int partition(int arr[], int low, int high) {
+    int mid = (low + high) / 2; // Calculate the middle index
+    int pivot = arr[mid]; // Use the middle element as the pivot
+    int i = low;
+    int j = high;
+
+    while (true) {
+        while (arr[i] < pivot) {
+            i++;
+        }
+        while (arr[j] > pivot) {
+            j--;
+        }
+        if (i >= j) {
+            return j;
+        }
+        swap(arr[i], arr[j]);
+        i++;
+        j--;
+    }
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of elements: ";
+    cin >> n;
+    
+    int arr[n];
+    cout << "Enter " << n << " elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    quickSort(arr, 0, n - 1);
+
+    cout << "Sorted array using Quick Sort:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+
+    return 0;
+}
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[low]; // Take the pivot as the lower bound
+    int i = low + 1;
+    for (int j = low + 1; j <= high; j++) {
+        if (arr[j] > pivot) {
+            swap(arr[i], arr[j]);
+            i++;
+        }
+    }
+    swap(arr[low], arr[i - 1]);
+    return i - 1;
+}
+
+int quickSelect(int arr[], int low, int high, int k) {
+    int pivotIndex = partition(arr, low, high);
+    if (pivotIndex == k - 1) {
+        return arr[pivotIndex];
+    } else if (pivotIndex < k - 1) {
+        return quickSelect(arr, pivotIndex + 1, high, k);
+    } else {
+        return quickSelect(arr, low, pivotIndex - 1, k);
+    }
+}
+
+int findKthLargest(int nums[], int length, int k) {
+    if (k >= 1 && k <= length) {
+        return quickSelect(nums, 0, length - 1, k);
+    } else {
+        return -1; // Return a default value if k is out of bounds
+    }
+}
+
+int main() {
+    int n, k;
+    cout << "Enter the number of elements: ";
+    cin >> n;
+    int nums[n];
+    cout << "Enter the elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> nums[i];
+    }
+    cout << "Enter k: ";
+    cin >> k;
+
+    int kthLargest = findKthLargest(nums, n, k);
+
+    if (kthLargest != -1) {
+        cout << "The " << k << "th largest element is: " << kthLargest << endl;
+    } else {
+        cout << "Invalid value of k." << endl;
+    }
+
+    return 0;
+}
+
+
+
+
+/*
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[low]; // Take the pivot as the lower bound
+    int i = low + 1;
+    for (int j = low + 1; j <= high; j++) {
+        if (arr[j] > pivot) {
+            swap(arr[i], arr[j]);
+            i++;
+        }
+    }
+    swap(arr[low], arr[i - 1]);
+    return i - 1;
+}
+
+int quickSelect(int arr[], int low, int high, int k) {
+    int pivotIndex = partition(arr, low, high);
+    if (pivotIndex == k - 1) {
+        return arr[pivotIndex];
+    } else if (pivotIndex < k - 1) {
+        return quickSelect(arr, pivotIndex + 1, high, k);
+    } else {
+        return quickSelect(arr, low, pivotIndex - 1, k);
+    }
+}
+
+int main() {
+    int nums[] = {3, 2, 1, 5, 6, 4};
+    int k = 2;
+
+    int length = sizeof(nums) / sizeof(nums[0]);
+    int kthLargest = quickSelect(nums, 0, length - 1, k);
+
+    if (kthLargest != -1) {
+        cout << "The " << k << "th largest element is: " << kthLargest << endl;
+    } else {
+        cout << "Invalid value of k." << endl;
+    }
+
+    return 0;
+}
+*/
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//heap
+///Max Heap
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class Heap {
+private:
+    int a[101], size;
+
+public:
+    Heap() {
+        size = 0;
+    }
+
+private:
+    void bottomTopAdjust(int i) {
+        while (i > 1 && a[i] > a[i / 2]) {
+            swap(a[i], a[i / 2]);
+            i = i / 2;
+        }
+    }
+
+    void topBottomAdjust(int i) {
+        int child;
+        while (2 * i <= size) {
+            child = 2 * i;
+            if (child + 1 <= size && a[child + 1] > a[child])
+                child++;
+            if (a[i] >= a[child])
+                break;
+            swap(a[i], a[child]);
+            i = child;
+        }
+    }
+
+public:
+    bool insert(int val) {
+        if (size >= 100)
+            return false;
+        size++;
+        a[size] = val;
+        bottomTopAdjust(size);
+        return true;
+    }
+
+    int showMax() {
+        if (size == 0)
+            return -1; // Assuming -1 is an invalid value
+        return a[1];
+    }
+
+    int showSize() {
+        return size;
+    }
+
+    bool deleteRoot() {
+        if (size == 0)
+            return false;
+        swap(a[1], a[size]);
+        size--;
+        topBottomAdjust(1);
+        return true;
+    }
+
+    void buildHeap() {
+        for (int i = size / 2; i >= 1; i--) {
+            topBottomAdjust(i);
+        }
+    }
+
+    void sort() {
+        int heapSize = size;
+        while (size > 1) {
+            swap(a[1], a[size]);
+            size--;
+            topBottomAdjust(1);
+        }
+        size = heapSize; // Restore the original size
+    }
+
+    void bfs() {
+        if (size == 0)
+            return;
+        int level = 1;
+        queue<int> q;
+        q.push(1);
+
+        while (!q.empty()) {
+            int parent = q.front();
+            q.pop();
+            if (parent == level) {
+                cout << endl;
+                level = level * 2;
+            }
+            cout << a[parent] << " ";
+            if (2 * parent <= size) q.push(2 * parent);
+            if (2 * parent + 1 <= size) q.push(2 * parent + 1);
+        }
+    }
+};
+
+int main() {
+
+    Heap heap;
+
+    while (true) {
+        cout << "1. Insert    2. Show Max    3. Delete Max    4. Sort    5. Level    6. Build Heap    7. End" << endl << endl;
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Insert Value: ";
+            int y;
+            cin >> y;
+            bool b = heap.insert(y);
+
+            if (b)   cout << y << " is inserted in the heap" << endl;
+        }
+
+        else if (choice == 2) {
+            if (heap.showSize() != 0)  cout << "Max Element: " << heap.showMax();
+            else    cout << "No element in the heap" << endl;
+        }
+
+        else if (choice == 3) {
+            bool b = heap.deleteRoot();
+            if (b)   cout << "Root deleted from heap";
+            else    cout << "Heap is empty";
+            cout << endl;
+        }
+
+        else if (choice == 4) {
+            heap.sort();
+        }
+
+        else if (choice == 5) {
+            cout << "Level Wise Traversal of the heap:" << endl;
+            heap.bfs();
+            cout << endl;
+        }
+        else if (choice == 6) {
+            if (heap.showSize() == 0)
+                cout << "Heap is Empty!" << endl;
+            else
+                heap.buildHeap();
+        }
+        else if (choice == 7) {
+            break;
+        }
+
+        else {
+            cout << "Invalid Choice" << endl;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+
+
+/*
+1 2
+1 9
+1 8
+1 16
+1 3
+1 7
+1 10
+1 1
+1 4
+1 14
+*/
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//minheap
+#include<bits/stdc++.h>
+using namespace std;
+
+class Heap {
+private:
+    int a[101], size;
+
+public:
+    Heap() {
+        size = 0;
+    }
+
+private:
+    void bottomTopAdjust(int i) {
+        while (i > 1 && a[i] < a[i / 2]) { // Change ">" to "<" to create a Min Heap
+            swap(a[i], a[i / 2]);
+            i = i / 2;
+        }
+    }
+
+    void topBottomAdjust(int i) {
+        int child;
+        while (2 * i <= size) {
+            child = 2 * i;
+            if (child + 1 <= size && a[child + 1] < a[child]) { // Change ">" to "<" to create a Min Heap
+                child++;
+            }
+            if (a[i] <= a[child]) { // Change ">=" to "<=" to create a Min Heap
+                break;
+            }
+            swap(a[i], a[child]);
+            i = child;
+        }
+    }
+
+public:
+    bool insert(int val) {
+        if (size >= 100)
+            return false;
+        size++;
+        a[size] = val;
+        bottomTopAdjust(size);
+        return true;
+    }
+
+    int showMin() { // Change "showMax" to "showMin" to get the minimum element
+        if (size == 0)
+            return -1; // Assuming -1 is an invalid value
+        return a[1];
+    }
+
+    int showSize() {
+        return size;
+    }
+
+    bool deleteRoot() {
+        if (size == 0)
+            return false;
+        swap(a[1], a[size]);
+        size--;
+        topBottomAdjust(1);
+        return true;
+    }
+
+    void buildHeap() {
+        for (int i = size / 2; i >= 1; i--) {
+            topBottomAdjust(i);
+        }
+    }
+
+    void sort() {
+        int heapSize = size;
+        while (size > 1) {
+            swap(a[1], a[size]);
+            size--;
+            topBottomAdjust(1);
+        }
+        size = heapSize; // Restore the original size
+    }
+
+    void bfs() {
+        if (size == 0)
+            return;
+        int level = 1;
+        queue<int> q;
+        q.push(1);
+
+        while (!q.empty()) {
+            int parent = q.front();
+            q.pop();
+            if (parent == level) {
+                cout << endl;
+                level = level * 2;
+            }
+            cout << a[parent] << " ";
+            if (2 * parent <= size) q.push(2 * parent);
+            if (2 * parent + 1 <= size) q.push(2 * parent + 1);
+        }
+    }
+};
+
+int main() {
+    Heap heap;
+
+    while (true) {
+        cout << "1. Insert    2. Show Min    3. Delete Min    4. Sort    5. Level    6. Build Heap    7. End" << endl << endl;
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Insert Value: ";
+            int y;
+            cin >> y;
+            bool b = heap.insert(y);
+
+            if (b)   cout << y << " is inserted in the heap" << endl;
+        }
+        else if (choice == 2) {
+            if (heap.showSize() != 0)  cout << "Min Element: " << heap.showMin();
+            else    cout << "No element in the heap" << endl;
+        }
+        else if (choice == 3) {
+            bool b = heap.deleteRoot();
+            if (b)   cout << "Root deleted from heap";
+            else    cout << "Heap is empty";
+            cout << endl;
+        }
+        else if (choice == 4) {
+            heap.sort();
+        }
+        else if (choice == 5) {
+            cout << "Level Wise Traversal of the heap:" << endl;
+            heap.bfs();
+            cout << endl;
+        }
+        else if (choice == 6) {
+            if (heap.showSize() == 0)
+                cout << "Heap is Empty!" << endl;
+            else
+                heap.buildHeap();
+        }
+        else if (choice == 7) {
+            break;
+        }
+        else {
+            cout << "Invalid Choice" << endl;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//priority queue
+
+///Max Heap
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class Heap {
+private:
+    int a[101], size;
+
+public:
+    Heap() {
+        size = 0;
+    }
+
+private:
+    void bottomTopAdjust(int i) {
+        while (i != 1) {
+            if (a[i] > a[i / 2])
+                swap(a[i], a[i / 2]);
+            else
+                break;
+            i = i / 2;
+        }
+    }
+
+    void topBottomAdjust(int i) {    /// HEAPIFY!
+        int pseudoRoot = a[i];
+        int pseudoIdx = i;
+        while (i <= size / 2) {
+            int leftVal = a[2 * i];
+            int maxIdx = 2 * i;
+            if ((2 * i + 1) <= size && a[2 * i + 1] > leftVal)
+                maxIdx = 2 * i + 1;
+            if (a[i] < a[maxIdx]) {
+                swap(a[i], a[maxIdx]);
+            }
+            else {
+                break;
+            }
+            i = maxIdx;
+        }
+    }
+
+public:
+    bool insert(int val) {
+        if (size >= 100)
+            return false;
+        size++;
+        a[size] = val;
+        bottomTopAdjust(size);
+        return true;
+    }
+
+    bool increaseKey(int x, int k) {
+        if (x < 1 || x > size || k <= a[x])
+            return false;
+        a[x] = k;
+        bottomTopAdjust(x);
+        return true;
+    }
+
+    int showMax() {
+        if (size == 0)
+            return -1; // Assuming -1 is an invalid value
+        return a[1];
+    }
+
+    int showSize() {
+        return size;
+    }
+
+    int extractMax() {
+        if (size == 0)
+            return -1; // Assuming -1 is an invalid value
+        int maxVal = a[1];
+        swap(a[1], a[size]);
+        size--;
+        topBottomAdjust(1);
+        return maxVal;
+    }
+
+    void bfs() {
+        if (size == 0)
+            return;
+        int level = 1;
+        queue<int> q;
+        q.push(1);
+
+        while (!q.empty()) {
+            int parent = q.front();
+            q.pop();
+            if (parent == level) {
+                cout << endl;
+                level = level * 2;
+            }
+            cout << a[parent] << " ";
+            if (2 * parent <= size) q.push(2 * parent);
+            if (2 * parent + 1 <= size) q.push(2 * parent + 1);
+        }
+    }
+};
+
+int main() {
+
+    Heap heap;
+
+    while (true) {
+        cout << "1. Insert    2. Increase Key    3. Show Max    4. Extract Max  5. Level Order Traversal 6. End" << endl << endl;
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Insert Value: ";
+            int y;
+            cin >> y;
+            bool b = heap.insert(y);
+
+            if (b)   cout << y << " is inserted in the heap" << endl;
+        }
+        else if (choice == 2) {
+            cout << "Which node you want to increase?" << endl;
+            int nodeNo;
+            cin >> nodeNo;
+            cout << "What will be the new value?" << endl;
+            int value;
+            cin >> value;
+            bool b = heap.increaseKey(nodeNo, value);
+            if (b) cout << "Node value increased successfully!" << endl;
+            else cout << "Unsuccessful Operation :(" << endl;
+        }
+        else if (choice == 3) {
+            if (heap.showSize() != 0)  cout << "Max Element: " << heap.showMax();
+            else    cout << "No element in the heap" << endl;
+        }
+        else if (choice == 4) {
+            if (heap.showSize() != 0)  cout << "Max element extracted: " << heap.extractMax();
+            else    cout << "No element in the heap" << endl;
+        }
+        else if (choice == 5) {
+            cout << "Level Wise Traversal of the heap:" << endl;
+            heap.bfs();
+            cout << endl;
+        }
+        else if (choice == 6)
+            break;
+        else {
+            cout << "Invalid Choice" << endl;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+
+
+/*
+1 2
+1 9
+1 8
+1 16
+1 3
+1 7
+1 10
+1 1
+1 4
+1 14
+*/
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//assignment 1
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class MaxPriorityQueue {
+private:
+    int a[101], size;
+
+public:
+    MaxPriorityQueue() {
+        size = 0;
+    }
+
+private:
+    void bottomTopAdjust(int i) {
+        while (i > 1 && a[i] > a[i / 2]) {
+            swap(a[i], a[i / 2]);
+            i = i / 2;
+        }
+    }
+
+    void topBottomAdjust(int i) {
+        int child;
+        while (2 * i <= size) {
+            child = 2 * i;
+            if (child + 1 <= size && a[child + 1] > a[child]) child++;
+            if (a[i] >= a[child]) break;
+            swap(a[i], a[child]);
+            i = child;
+        }
+    }
+
+public:
+    bool insert(int val) {
+        if (size >= 100) return false;
+        size++;
+        a[size] = val;
+        bottomTopAdjust(size);
+        return true;
+    }
+
+    int getMax() {
+        if (size == 0) return -1; // Assuming -1 is an invalid value
+        return a[1];
+    }
+
+    int extractMax() {
+        if (size == 0) return -1; // Assuming -1 is an invalid value
+        int maxElement = a[1];
+        swap(a[1], a[size]);
+        size--;
+        topBottomAdjust(1);
+        return maxElement;
+    }
+
+    void bfs() {
+    if (size == 0) return;
+    int level = 1;
+    queue<int> q;
+    q.push(1);
+
+    while (!q.empty()) {
+        int levelSize = q.size();
+        for (int i = 0; i < levelSize; i++) {
+            int parent = q.front();
+            q.pop();
+            cout << a[parent] << " ";
+            if (2 * parent <= size) q.push(2 * parent);
+            if (2 * parent + 1 <= size) q.push(2 * parent + 1);
+        }
+        cout << endl;
+    }
+}
+
+};
+
+int main() {
+    MaxPriorityQueue maxPriorityQueue;
+
+    while (true) {
+        cout << "1. Insert    2. Get Max    3. Extract Max  4. Level Order Traversal 5. End" << endl << endl;
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Insert Value: ";
+            int y;
+            cin >> y;
+            bool b = maxPriorityQueue.insert(y);
+
+            if (b)   cout << y << " is inserted in the priority queue" << endl;
+        }
+        else if (choice == 2) {
+            if (maxPriorityQueue.getMax() != -1)  cout << "Max Element: " << maxPriorityQueue.getMax();
+            else    cout << "No element in the priority queue" << endl;
+        }
+        else if (choice == 3) {
+            if (maxPriorityQueue.getMax() != -1)  cout << "Max element extracted: " << maxPriorityQueue.extractMax();
+            else    cout << "No element in the priority queue" << endl;
+        }
+        else if (choice == 4) {
+            cout << "Level Wise Traversal of the priority queue:" << endl;
+            maxPriorityQueue.bfs();
+            cout << endl;
+        }
+        else if (choice == 5) break;
+        else {
+            cout << "Invalid Choice" << endl;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+/*
+1 2
+1 9
+1 8
+1 16
+1 3
+1 7
+1 10
+1 1
+1 4
+1 14
+*/
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//assignment 2
+
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class PriorityQueue {
+private:
+    pair<int, int> a[101]; // Pair of key and value
+    int size;
+
+public:
+    PriorityQueue() {
+        size = 0;
+    }
+
+private:
+    void bottomTopAdjust(int i) {
+        while (i > 1 && a[i].first > a[i / 2].first) {
+            swap(a[i], a[i / 2]);
+            i = i / 2;
+        }
+    }
+
+    void topBottomAdjust(int i) {
+        int child;
+        while (2 * i <= size) {
+            child = 2 * i;
+            if (child + 1 <= size && a[child + 1].first > a[child].first)
+                child++;
+            if (a[i].first >= a[child].first)
+                break;
+            swap(a[i], a[child]);
+            i = child;
+        }
+    }
+
+public:
+    bool insert(int key, int val) {
+        if (size >= 100)
+            return false;
+        size++;
+        a[size] = make_pair(key, val);
+        bottomTopAdjust(size);
+        return true;
+    }
+
+    pair<int, int> getMax() {
+        if (size == 0)
+            return make_pair(-1, -1); // Assuming (-1, -1) is an invalid value
+        return a[1];
+    }
+
+    pair<int, int> extractMax() {
+        if (size == 0)
+            return make_pair(-1, -1); // Assuming (-1, -1) is an invalid value
+        pair<int, int> maxElement = a[1];
+        swap(a[1], a[size]);
+        size--;
+        topBottomAdjust(1);
+        return maxElement;
+    }
+
+    void bfs() {
+        if (size == 0) return;
+        int level = 1;
+        queue<int> q;
+        q.push(1);
+
+        while (!q.empty()) {
+            int levelSize = q.size();
+            for (int i = 0; i < levelSize; i++) {
+                int parent = q.front();
+                q.pop();
+                cout << "(" << a[parent].first << "," << a[parent].second << ") ";
+                if (2 * parent <= size) q.push(2 * parent);
+                if (2 * parent + 1 <= size) q.push(2 * parent + 1);
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    PriorityQueue priorityQueue;
+
+    while (true) {
+        cout << "1. Insert    2. Get Max    3. Extract Max  4. Level Order Traversal 5. End" << endl << endl;
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Insert Key and Value: ";
+            int key, value;
+            cin >> key >> value;
+            bool b = priorityQueue.insert(key, value);
+
+            if (b)   cout << "(" << key << "," << value << ") is inserted in the priority queue" << endl;
+        }
+        else if (choice == 2) {
+            pair<int, int> maxElement = priorityQueue.getMax();
+            if (maxElement.first != -1)
+                cout << "Max Element: (" << maxElement.first << "," << maxElement.second << ")";
+            else
+                cout << "No element in the priority queue" << endl;
+        }
+        else if (choice == 3) {
+            pair<int, int> maxElement = priorityQueue.extractMax();
+            if (maxElement.first != -1)
+                cout << "Max element extracted: (" << maxElement.first << "," << maxElement.second << ")";
+            else
+                cout << "No element in the priority queue" << endl;
+        }
+        else if (choice == 4) {
+            cout << "Level Wise Traversal of the priority queue:" << endl;
+            priorityQueue.bfs();
+            cout << endl;
+        }
+        else if (choice == 5)
+            break;
+        else {
+            cout << "Invalid Choice" << endl;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+
